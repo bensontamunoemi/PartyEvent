@@ -1,16 +1,18 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import Button from '@restart/ui/esm/Button';
+import { logout } from '../action/userAction';
 
-export const Header = ({ history }) => {
+export const Header = () => {
+  const dispatch = useDispatch();
+
   const getUser = useSelector((state) => state.getUser);
   const { user } = getUser;
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    history.push('/login');
+    dispatch(logout());
   };
   return (
     <>

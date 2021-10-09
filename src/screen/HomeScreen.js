@@ -24,10 +24,8 @@ const HomeScreen = ({ history }) => {
     if (!user) {
       history.push('/login');
     } else {
-      if (events) {
-        let filterUserEvent = events.filter((event) => event.user === user._id);
-        dispatch(getUserEvents(filterUserEvent));
-      }
+      // let filterUserEvent = events.filter((event) => event.user === user._id);
+      dispatch(getUserEvents());
     }
   }, [history, user, dispatch, events]);
 
@@ -38,26 +36,27 @@ const HomeScreen = ({ history }) => {
       if (eventToDelete === true) {
         Swal.fire({
           title: 'Are you sure?',
-          text: 'You will not be able to recover this imaginary file!',
+          text: 'You will not be able to recover this again!',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonText: 'Yes, delete it!',
           cancelButtonText: 'No, keep it',
         }).then((result) => {
           if (result.isConfirmed) {
-            //here
-            Swal.fire(
-              'Deleted!',
-              'Your imaginary file has been deleted.',
-              'success'
-            );
+            newArray.splice(index);
+            localStorage.removeItem('events');
+            localStorage.setItem('events', JSON.stringify(newArray));
+
+            Swal.fire('Deleted!', 'The event has been deleted.', 'success');
+            window.location.reload();
           } else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire('Cancelled', 'Your imaginary file is safe :)', 'error');
+            Swal.fire(
+              'Cancelled',
+              'The delete request has been cancelled :)',
+              'error'
+            );
           }
         });
-
-        console.log(newArray[index]);
-        // newArray.splice();
       }
     }
   };

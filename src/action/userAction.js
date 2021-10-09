@@ -35,3 +35,8 @@ export const register = (data) => async (dispatch) => {
     });
   }
 };
+
+export const logout = () => () => {
+  localStorage.removeItem('user');
+  document.location.href = '/login';
+};

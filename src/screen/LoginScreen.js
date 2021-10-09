@@ -8,8 +8,8 @@ import FormContainer from '../components/FormContainer';
 const LoginScreen = ({ history, location }) => {
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const getUser = useSelector((state) => state.getUser);
   const { user } = getUser;
@@ -33,7 +33,7 @@ const LoginScreen = ({ history, location }) => {
       );
     if (authUser) {
       localStorage.setItem('user', JSON.stringify(authUser));
-      history.push('/');
+      window.location.href = '/';
     } else {
       toast.error('User not found');
     }

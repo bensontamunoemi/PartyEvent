@@ -51,7 +51,7 @@ const RegisterScreen = ({ history, location }) => {
           password: password,
         })
       );
-      history.push('/');
+      window.location.href = '/';
     }
   };
   return (

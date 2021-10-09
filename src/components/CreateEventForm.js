@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form, Modal, Button } from 'react-bootstrap';
 import FormContainer from './FormContainer';
 import { eventCreate } from '../action/eventAction';
+import { CREATE_EVENT_RESET } from '../constants/eventConstants';
 
 const CreateEventForm = ({ lgShow, setLgShow }) => {
   const [name, setName] = useState('');
@@ -31,6 +32,10 @@ const CreateEventForm = ({ lgShow, setLgShow }) => {
         })
       );
       toast.success('New event added successfully');
+      dispatch({ type: CREATE_EVENT_RESET });
+      setName('');
+      setDescription('');
+      setLgShow(false);
     }
   };
   return (

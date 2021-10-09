@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import FormContainer from '../components/FormContainer';
-import { singleEventAction } from '../action/eventAction';
+import { singleEventAction, updateEvent } from '../action/eventAction';
 
 const EventEditScreen = ({ match }) => {
   const [name, setName] = useState('');
@@ -40,23 +40,14 @@ const EventEditScreen = ({ match }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    let newArray = [...eventArray];
-
-    for (let index = 0; index < newArray.length; index++) {
-      //   console.log('newArray[index]', newArray[index]);
-      let eventToUpdate = newArray[index]._id === eventId;
-      if (eventToUpdate === true) {
-        newArray[index].name = name;
-        newArray[index].date = date;
-        newArray[index].description = description;
-        localStorage.removeItem('events');
-        localStorage.setItem('events', JSON.stringify(newArray));
-        toast.success('Successfully Updated Event');
-      }
-    }
-    // let eventToUpdate = newArray.find((event) => event._id === eventId);
-    // console.log('newArray', newArray);
+    dispatch(
+      updateEvent(eventId, {
+        name,
+        date,
+        description,
+      })
+    );
+    toast.success('Successfully Updated Event');
   };
 
   return (

@@ -2,6 +2,7 @@ import {
   CREATE_EVENT_FAIL,
   CREATE_EVENT_REQUEST,
   CREATE_EVENT_SUCCESS,
+  EDIT_EVENT_SUCCESS,
   GET_SINGLE_EVENT,
   GET_USER_EVENT,
 } from '../constants/eventConstants';
@@ -36,7 +37,38 @@ export const eventCreate = (data) => async (dispatch) => {
 };
 
 export const getUserEvents = (data) => async (dispatch) => {
-  dispatch({ type: GET_USER_EVENT, payload: data });
+  const eventsFromStorage = localStorage.getItem('events')
+    ? JSON.parse(localStorage.getItem('events'))
+    : [];
+
+  const userFromStorage = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user'))
+    : null;
+
+  let filterUserEvent = eventsFromStorage.filter(
+    (event) => event.user === userFromStorage._id
+  );
+
+  dispatch({ type: GET_USER_EVENT, payload: filterUserEvent });
+};
+
+export const updateEvent = (id, data) => async (dispatch) => {
+  const eventsFromStorage =
+    localStorage.getItem('events') &&
+    JSON.parse(localStorage.getItem('events'));
+  let newArray = [...eventsFromStorage];
+
+  for (let index = 0; index < newArray.length; index++) {
+    //   console.log('newArray[index]', newArray[index]);
+    let eventToUpdate = newArray[index]._id === id;
+    if (eventToUpdate === true) {
+      newArray[index].name = data.name;
+      newArray[index].date = data.date;
+      newArray[index].description = data.description;
+      localStorage.removeItem('events');
+      localStorage.setItem('events', JSON.stringify(newArray));
+    }
+  }
 };
 
 export const singleEventAction = (data) => async (dispatch) => {
